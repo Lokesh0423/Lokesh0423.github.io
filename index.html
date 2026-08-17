@@ -7,24 +7,24 @@
 <meta name="description" content="Cloud/DevOps Engineer in Berlin. Writer-director of the neo-noir short film Love at First Crime.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0D0F12;
-    --panel:#171A1F;
-    --panel-2:#1D2129;
-    --amber:#C89B4A;
-    --teal:#4FA8A0;
-    --paper:#E8E6E0;
-    --steel:#7C818A;
-    --line: rgba(232,230,224,0.08);
+    --ink:#EEF0E9;
+    --panel:#FAFAF5;
+    --panel-2:#E4E6DC;
+    --amber:#A63D2E;
+    --teal:#1F3A5C;
+    --paper:#20242A;
+    --steel:#6B7268;
+    --line: rgba(32,36,42,0.10);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
-    background:var(--ink);
+    background:#DCD3C8;
     color:var(--paper);
-    font-family:'Work Sans', sans-serif;
+    font-family:'Inter', sans-serif;
     font-weight:300;
     line-height:1.6;
     overflow-x:hidden;
@@ -36,20 +36,17 @@
   .mono{ font-family:'JetBrains Mono', monospace; }
 
   /* ---- Blind stripes signature element ---- */
-  .blinds{
+  .scenery{
     position:fixed;
     inset:0;
     z-index:0;
     pointer-events:none;
-    opacity:0.05;
-    background:repeating-linear-gradient(
-      100deg,
-      transparent,
-      transparent 38px,
-      var(--paper) 38px,
-      var(--paper) 40px
-    );
-    transition: transform 0.2s ease-out;
+    overflow:hidden;
+  }
+  .scenery svg{
+    width:100%;
+    height:100%;
+    display:block;
   }
 
   .grain{
@@ -131,7 +128,7 @@
     width:100%;
     height:100%;
     object-fit:cover;
-    filter:grayscale(0.35) contrast(1.05) brightness(0.96) sepia(0.08);
+    filter:grayscale(0.15) contrast(1.02) brightness(1.01) saturate(0.92);
     display:block;
   }
   .hero-photo .tag{
@@ -164,10 +161,10 @@
     width:7px; height:7px;
     border-radius:50%;
     background:var(--teal);
-    box-shadow:0 0 12px var(--teal);
+    box-shadow:0 0 8px rgba(31,58,92,0.35);
   }
   h1{
-    font-family:'Fraunces', serif;
+    font-family:'Sora', sans-serif;
     font-weight:500;
     font-size:clamp(2.6rem, 6vw, 5.2rem);
     line-height:1.02;
@@ -175,9 +172,9 @@
     max-width:16ch;
   }
   h1 em{
-    font-style:italic;
+    font-style:normal;
     color:var(--amber);
-    font-weight:500;
+    font-weight:600;
   }
   .hero-sub{
     margin-top:28px;
@@ -201,7 +198,7 @@
   }
   .hero-meta strong{
     display:block;
-    font-family:'Work Sans', sans-serif;
+    font-family:'Inter', sans-serif;
     font-size:15px;
     font-weight:500;
     color:var(--paper);
@@ -226,7 +223,7 @@
     letter-spacing:0.1em;
   }
   h2{
-    font-family:'Fraunces', serif;
+    font-family:'Sora', sans-serif;
     font-weight:500;
     font-size:clamp(1.6rem, 3vw, 2.4rem);
   }
@@ -318,7 +315,7 @@
     display:block;
   }
   .project h3{
-    font-family:'Fraunces', serif;
+    font-family:'Sora', sans-serif;
     font-size:1.5rem;
     font-weight:500;
     margin-bottom:14px;
@@ -383,7 +380,7 @@
     text-transform:uppercase;
   }
   .film-copy h3{
-    font-family:'Fraunces', serif;
+    font-family:'Sora', sans-serif;
     font-style:italic;
     font-weight:500;
     font-size:2.2rem;
@@ -432,7 +429,7 @@
     padding-bottom:180px;
   }
   .contact h2{
-    font-family:'Fraunces', serif;
+    font-family:'Sora', sans-serif;
     font-size:clamp(2rem, 5vw, 3.4rem);
     font-weight:500;
     max-width:16ch;
@@ -505,8 +502,56 @@
 </head>
 <body>
 
-<div class="blinds" id="blinds"></div>
-<div class="grain"></div>
+<div class="scenery">
+  <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#DAD4DF"/>
+        <stop offset="45%" stop-color="#E3D6D6"/>
+        <stop offset="70%" stop-color="#EAE0CE"/>
+        <stop offset="100%" stop-color="#E5DACA"/>
+      </linearGradient>
+      <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#DFD8CE"/>
+        <stop offset="100%" stop-color="#D2D5D6"/>
+      </linearGradient>
+    </defs>
+
+    <rect x="0" y="0" width="1920" height="1080" fill="url(#sky)"/>
+
+    <g opacity="0.09" stroke="#2A3A52" stroke-width="1.5" fill="none">
+      <path d="M0,660 L120,600 L260,640 L400,560 L520,610 L640,540 L760,600 L900,570 L1040,620 L1180,580 L1320,630 L1460,590 L1600,650 L1760,610 L1920,660"/>
+    </g>
+    <g opacity="0.13" stroke="#2A3A52" stroke-width="1.5" fill="none">
+      <path d="M0,690 L180,650 L340,680 L520,630 L700,670 L880,640 L1060,680 L1260,650 L1440,690 L1620,660 L1920,700"/>
+    </g>
+
+    <rect x="0" y="700" width="1920" height="380" fill="url(#water)"/>
+
+    <g opacity="0.22" stroke="#2A3A52" stroke-width="2" fill="none" stroke-linecap="round">
+      <line x1="1488" y1="640" x2="1488" y2="790"/>
+      <line x1="1628" y1="640" x2="1628" y2="790"/>
+      <line x1="1450" y1="700" x2="1450" y2="790"/>
+      <line x1="1666" y1="700" x2="1666" y2="790"/>
+      <line x1="1450" y1="678" x2="1666" y2="678"/>
+      <line x1="1465" y1="627" x2="1651" y2="627"/>
+      <path d="M1420,600 L1696,600 M1436,575 L1680,575 L1696,600"/>
+      <path d="M1436,575 L1420,600"/>
+    </g>
+
+    <g opacity="0.05" stroke="#2A3A52" stroke-width="1.5" fill="none">
+      <line x1="1450" y1="790" x2="1450" y2="830"/>
+      <line x1="1666" y1="790" x2="1666" y2="830"/>
+    </g>
+
+    <g opacity="0.06" stroke="#3A4658" stroke-width="1" fill="none">
+      <path d="M0,760 Q120,750 240,760 T480,760 T720,760 T960,760 T1200,760 T1440,760 T1680,760 T1920,760"/>
+      <path d="M0,850 Q120,838 240,850 T480,850 T720,850 T960,850 T1200,850 T1440,850 T1680,850 T1920,850"/>
+      <path d="M0,950 Q120,936 240,950 T480,950 T720,950 T960,950 T1200,950 T1440,950 T1680,950 T1920,950"/>
+      <path d="M0,1050 Q120,1034 240,1050 T480,1050 T720,1050 T960,1050 T1200,1050 T1440,1050 T1680,1050 T1920,1050"/>
+    </g>
+  </svg>
+</div>
 
 <header>
   <div class="logo">LOKESH KUMAR<span>.</span>GADDALA</div>
@@ -522,7 +567,7 @@
   <div class="hero-grid">
     <div>
       <div class="case-tag mono">Berlin, Germany — Open to relocation</div>
-      <h1>Infrastructure that holds <em>under pressure.</em></h1>
+      <h1><em>Precision</em> over noise.</h1>
       <p class="hero-sub">Cloud/DevOps Engineer building resilient infrastructure on Azure and AWS. 5+ years across enterprise defense, banking, and manufacturing clients. Focused on GitOps, secure CI/CD, and infrastructure that stays boring under pressure.</p>
       <div class="hero-meta">
         <div>Role<strong>Cloud / DevOps Engineer</strong></div>
@@ -749,18 +794,6 @@
   <span>Lokesh Kumar Gaddala © 2026</span>
   <span>Berlin, Germany</span>
 </footer>
-
-<script>
-  // Subtle blind-stripe parallax tied to scroll, kept minimal and respectful of reduced-motion
-  const blinds = document.getElementById('blinds');
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!prefersReduced){
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      blinds.style.transform = `translateY(${y * 0.04}px) rotate(${y * 0.002}deg)`;
-    }, { passive:true });
-  }
-</script>
 
 </body>
 </html>
