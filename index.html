@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lokesh Kumar Gaddala — Cloud/DevOps Engineer &amp; Director</title>
+<meta name="description" content="Cloud/DevOps Engineer in Berlin. Writer-director of the neo-noir short film Love at First Crime.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0D0F12;
+    --panel:#171A1F;
+    --panel-2:#1D2129;
+    --amber:#C89B4A;
+    --teal:#4FA8A0;
+    --paper:#E8E6E0;
+    --steel:#7C818A;
+    --line: rgba(232,230,224,0.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Work Sans', sans-serif;
+    font-weight:300;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--amber); color:var(--ink); }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  /* ---- Blind stripes signature element ---- */
+  .blinds{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:0.05;
+    background:repeating-linear-gradient(
+      100deg,
+      transparent,
+      transparent 38px,
+      var(--paper) 38px,
+      var(--paper) 40px
+    );
+    transition: transform 0.2s ease-out;
+  }
+
+  .grain{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:0.03;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:28px 6vw;
+    background:linear-gradient(to bottom, rgba(13,15,18,0.95), rgba(13,15,18,0));
+    backdrop-filter:blur(2px);
+  }
+  .logo{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.08em;
+    color:var(--paper);
+  }
+  .logo span{ color:var(--amber); }
+  nav{ display:flex; gap:36px; }
+  nav a{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.06em;
+    color:var(--steel);
+    text-transform:uppercase;
+    transition:color 0.25s;
+    position:relative;
+  }
+  nav a:hover{ color:var(--teal); }
+
+  section{
+    position:relative;
+    z-index:2;
+    padding:140px 6vw;
+    max-width:1280px;
+    margin:0 auto;
+  }
+
+  /* ---- HERO ---- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding-top:100px;
+  }
+  .case-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    color:var(--teal);
+    text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .case-tag::before{
+    content:'';
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--teal);
+    box-shadow:0 0 12px var(--teal);
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(2.6rem, 6vw, 5.2rem);
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    max-width:16ch;
+  }
+  h1 em{
+    font-style:italic;
+    color:var(--amber);
+    font-weight:500;
+  }
+  .hero-sub{
+    margin-top:28px;
+    max-width:52ch;
+    font-size:1.15rem;
+    color:var(--steel);
+    font-weight:300;
+  }
+  .hero-meta{
+    display:flex;
+    gap:48px;
+    margin-top:64px;
+    flex-wrap:wrap;
+  }
+  .hero-meta div{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--steel);
+    text-transform:uppercase;
+  }
+  .hero-meta strong{
+    display:block;
+    font-family:'Work Sans', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    color:var(--paper);
+    text-transform:none;
+    letter-spacing:0;
+    margin-top:6px;
+  }
+
+  /* ---- SECTION LABELS ---- */
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:18px;
+    margin-bottom:56px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:24px;
+  }
+  .section-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--amber);
+    letter-spacing:0.1em;
+  }
+  h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(1.6rem, 3vw, 2.4rem);
+  }
+  .section-desc{
+    margin-left:auto;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--steel);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+
+  /* ---- DUALITY / ABOUT ---- */
+  .duality{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .duality > div{
+    background:var(--ink);
+    padding:44px;
+  }
+  .duality h3{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .duality .sys h3{ color:var(--teal); }
+  .duality .noir h3{ color:var(--amber); }
+  .duality p{ color:var(--steel); font-size:0.98rem; }
+  .duality p + p{ margin-top:14px; }
+
+  /* ---- STACK ---- */
+  .stack-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .stack-item{
+    background:var(--panel);
+    padding:20px 18px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--paper);
+    transition:background 0.25s, color 0.25s;
+  }
+  .stack-item:hover{
+    background:var(--panel-2);
+    color:var(--teal);
+  }
+
+  /* ---- PROJECTS ---- */
+  .project{
+    border:1px solid var(--line);
+    padding:36px;
+    margin-bottom:1px;
+    display:grid;
+    grid-template-columns:2fr 3fr;
+    gap:32px;
+  }
+  .project-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--amber);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:10px;
+    display:block;
+  }
+  .project h3{
+    font-family:'Fraunces', serif;
+    font-size:1.5rem;
+    font-weight:500;
+    margin-bottom:14px;
+  }
+  .project a.repo-link{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--teal);
+    border-bottom:1px solid transparent;
+  }
+  .project a.repo-link:hover{ border-bottom-color:var(--teal); }
+  .project-desc p{ color:var(--steel); margin-bottom:16px; }
+  .project-tools{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:18px;
+  }
+  .project-tools span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    padding:5px 10px;
+    border:1px solid var(--line);
+    color:var(--steel);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+
+  /* ---- FILM ---- */
+  .film-block{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:56px;
+    align-items:center;
+  }
+  .film-frame{
+    aspect-ratio:4/5;
+    background:
+      repeating-linear-gradient(100deg, transparent, transparent 20px, rgba(200,155,74,0.06) 20px, rgba(200,155,74,0.06) 22px),
+      linear-gradient(160deg, var(--panel), var(--ink));
+    border:1px solid var(--line);
+    display:flex;
+    align-items:flex-end;
+    padding:28px;
+    position:relative;
+    overflow:hidden;
+  }
+  .film-frame::before{
+    content:'19 / 21';
+    position:absolute;
+    top:24px; left:28px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--amber);
+    letter-spacing:0.1em;
+  }
+  .film-frame .cap{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--steel);
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+  .film-copy h3{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:2.2rem;
+    margin-bottom:20px;
+    color:var(--amber);
+  }
+  .film-copy p{ color:var(--steel); margin-bottom:16px; }
+  .film-status{
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--teal);
+    margin-top:18px;
+  }
+  .film-status::before{
+    content:'';
+    width:7px;height:7px;border-radius:50%;
+    background:var(--teal);
+  }
+
+  /* ---- EXPERIENCE ---- */
+  .timeline{ border-top:1px solid var(--line); }
+  .tl-row{
+    display:grid;
+    grid-template-columns:140px 1fr 1fr;
+    gap:24px;
+    padding:26px 0;
+    border-bottom:1px solid var(--line);
+    align-items:baseline;
+  }
+  .tl-row .yr{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--amber);
+  }
+  .tl-row .role{ font-weight:500; }
+  .tl-row .org{ color:var(--steel); font-size:0.95rem; }
+
+  /* ---- CONTACT ---- */
+  .contact{
+    text-align:center;
+    padding-bottom:180px;
+  }
+  .contact h2{
+    font-family:'Fraunces', serif;
+    font-size:clamp(2rem, 5vw, 3.4rem);
+    font-weight:500;
+    max-width:16ch;
+    margin:0 auto 28px;
+  }
+  .contact p{ color:var(--steel); max-width:42ch; margin:0 auto 44px; }
+  .contact-links{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .contact-links a{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    padding:14px 26px;
+    border:1px solid var(--line);
+    transition:all 0.25s;
+  }
+  .contact-links a:hover{
+    border-color:var(--teal);
+    color:var(--teal);
+  }
+  .contact-links a.primary{
+    background:var(--amber);
+    color:var(--ink);
+    border-color:var(--amber);
+  }
+  .contact-links a.primary:hover{
+    background:transparent;
+    color:var(--amber);
+  }
+
+  footer{
+    padding:32px 6vw;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--steel);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+
+  @media (max-width: 860px){
+    section{ padding:100px 6vw; }
+    .duality{ grid-template-columns:1fr; }
+    .project{ grid-template-columns:1fr; }
+    .film-block{ grid-template-columns:1fr; }
+    .tl-row{ grid-template-columns:1fr; gap:6px; }
+    nav{ display:none; }
+    .hero-meta{ gap:28px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .blinds{ transition:none; }
+  }
+
+  :focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="blinds" id="blinds"></div>
+<div class="grain"></div>
+
+<header>
+  <div class="logo">LOKIE<span>.</span>GADDALA</div>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#stack">Stack</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="case-tag mono">Berlin, Germany — Open to relocation</div>
+  <h1>Systems that hold under pressure. <em>Stories that don't.</em></h1>
+  <p class="hero-sub">Cloud/DevOps Engineer building resilient infrastructure on Azure and AWS. 5+ years across enterprise defense, banking, and manufacturing clients. Focused on GitOps, secure CI/CD, and infrastructure that stays boring under pressure.</p>
+  <div class="hero-meta">
+    <div>Role<strong>Cloud / DevOps Engineer</strong></div>
+    <div>Experience<strong>5+ years, enterprise</strong></div>
+    <div>Core stack<strong>Azure · AWS · Kubernetes · Terraform</strong></div>
+    <div>Based in<strong>Berlin, open to relocation</strong></div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="section-head">
+    <span class="section-num mono">01</span>
+    <h2>Selected work</h2>
+    <span class="section-desc">Infrastructure &amp; automation</span>
+  </div>
+
+  <div class="project">
+    <div>
+      <span class="project-tag">Flagship</span>
+      <h3>secure-gitops-platform</h3>
+      <a class="repo-link" href="https://github.com/Lokesh0423/secure-gitops-platform" target="_blank" rel="noopener">github.com/Lokesh0423 →</a>
+    </div>
+    <div class="project-desc">
+      <p>A GitOps reference platform on AKS: ArgoCD for continuous delivery, Trivy for container scanning, OPA for policy enforcement, Prometheus for observability. Includes documented CI/CD fixes, resolving a Trivy scanner crash and a Jest server hang, and a deliberate decision to scope vulnerability scanning to OS-level packages as a pragmatic tradeoff.</p>
+      <div class="project-tools">
+        <span>AKS</span><span>Terraform</span><span>ArgoCD</span><span>Trivy</span><span>OPA</span><span>Prometheus</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project">
+    <div>
+      <span class="project-tag">Pipeline</span>
+      <h3>azure-cicd-pipeline</h3>
+      <a class="repo-link" href="https://github.com/Lokesh0423/azure-cicd-pipeline" target="_blank" rel="noopener">github.com/Lokesh0423/azure-cicd-pipeline →</a>
+    </div>
+    <div class="project-desc">
+      <p>An Azure-native CI/CD reference pipeline covering build, test, and release stages, structured for teams that need a clear, auditable deployment path rather than ad hoc scripts.</p>
+      <div class="project-tools">
+        <span>Azure DevOps</span><span>GitHub Actions</span><span>Docker</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project">
+    <div>
+      <span class="project-tag">In progress</span>
+      <h3>Multi-cloud cost anomaly detector</h3>
+      <span class="repo-link mono" style="color:var(--steel);">Building now</span>
+    </div>
+    <div class="project-desc">
+      <p>A FinOps tool that pulls cost data from both Azure Cost Management and AWS Cost Explorer, normalizes it, and flags spending anomalies with an Isolation Forest model. Built and demonstrated on synthetic billing data for cost-free reproducibility.</p>
+      <div class="project-tools">
+        <span>Python</span><span>scikit-learn</span><span>Azure Cost Mgmt</span><span>AWS Cost Explorer</span><span>Grafana</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="section-head">
+    <span class="section-num mono">02</span>
+    <h2>Toolset</h2>
+    <span class="section-desc">Hands-on, production-tested</span>
+  </div>
+  <div class="stack-grid">
+    <div class="stack-item">Azure / AKS</div>
+    <div class="stack-item">AWS</div>
+    <div class="stack-item">Terraform</div>
+    <div class="stack-item">Kubernetes</div>
+    <div class="stack-item">Helm</div>
+    <div class="stack-item">ArgoCD</div>
+    <div class="stack-item">GitHub Actions</div>
+    <div class="stack-item">GitLab CI</div>
+    <div class="stack-item">Docker</div>
+    <div class="stack-item">Prometheus</div>
+    <div class="stack-item">Grafana</div>
+    <div class="stack-item">Python</div>
+    <div class="stack-item">Bash</div>
+    <div class="stack-item">OPA</div>
+    <div class="stack-item">Trivy</div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-head">
+    <span class="section-num mono">03</span>
+    <h2>Experience</h2>
+    <span class="section-desc">Enterprise DevOps, 5+ years</span>
+  </div>
+  <div class="timeline">
+    <div class="tl-row">
+      <span class="yr mono">2026</span>
+      <span class="role">MSc, Information Technology Management</span>
+      <span class="org">BSBI Berlin — Merit, Grade 1.9</span>
+    </div>
+    <div class="tl-row">
+      <span class="yr mono">Berlin</span>
+      <span class="role">Working Student, Street Patrol / Operations</span>
+      <span class="org">Voi Technology</span>
+    </div>
+    <div class="tl-row">
+      <span class="yr mono">5+ yrs</span>
+      <span class="role">Cloud / DevOps Engineer</span>
+      <span class="org">Tech Mahindra — clients: General Dynamics, Citizens Financial Group, ABInBev</span>
+    </div>
+    <div class="tl-row">
+      <span class="yr mono">Prior</span>
+      <span class="role">Cloud / DevOps Engineer</span>
+      <span class="org">LTIMindtree</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <span class="section-num mono" style="display:block;margin-bottom:20px;">04 / END OF FILE</span>
+  <h2>Open to Cloud / DevOps roles across Germany.</h2>
+  <p>Job Seeker Residence Permit, Section 20 AufenthG. Work permit conversion required upon offer.</p>
+  <div class="contact-links">
+    <a class="primary" href="mailto:lokeshkumargaddala0423@gmail.com">Email me</a>
+    <a href="https://github.com/Lokesh0423" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://x.com/Niilokam" target="_blank" rel="noopener">X / @Niilokam</a>
+    <a href="https://www.linkedin.com/in/lokesh-kumar-gaddala-/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</section>
+
+<footer>
+  <span>Lokesh Kumar Gaddala © 2026</span>
+  <span>Berlin, Germany</span>
+</footer>
+
+<script>
+  // Subtle blind-stripe parallax tied to scroll, kept minimal and respectful of reduced-motion
+  const blinds = document.getElementById('blinds');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!prefersReduced){
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      blinds.style.transform = `translateY(${y * 0.04}px) rotate(${y * 0.002}deg)`;
+    }, { passive:true });
+  }
+</script>
+
+</body>
+</html>
