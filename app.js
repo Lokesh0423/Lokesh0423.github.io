@@ -230,12 +230,10 @@ function setLayer(id){
 }
 
 function projectVisual(p){
-  if(p.visual==='cicd')return `<div class="project-visual screenshot-card"><img src="assets/azure-build-completed.png" alt="Original Azure pipeline build screenshot" loading="lazy"><span class="screenshot-label">BUILD EVIDENCE · 13 JUN 2026</span></div>`;
-
   const status=p.visual==='cicd'?'Historical evidence':p.visual==='aws'?'Practice history':'Source walkthrough';
   let graphic='';
-  if(p.visual==='gitops')graphic='<span class="mini-node">Git</span><span>→</span><span class="mini-node">CI / Scan</span><span>→</span><span class="mini-node">Argo CD</span>';
-  if(p.visual==='cicd')graphic='<div class="pipeline-evidence-mini"><span class="check-circle">✓</span><span><b>Build and Push to ACR</b><small>Historical stage · 13 Jun 2026</small></span><em>1m 0s</em></div>';
+  if(p.visual==='gitops')graphic='<div class="platform-map"><div class="platform-node"><span>01 / SOURCE</span><b>{ git }</b><small>Versioned configuration</small></div><div class="platform-node"><span>02 / VALIDATE</span><b>[ CI + Trivy ]</b><small>Test and image scan</small></div><div class="platform-node"><span>04 / OBSERVE</span><b>/metrics</b><small>Prometheus instrumentation</small></div><div class="platform-node"><span>03 / RECONCILE</span><b>&lt; Argo CD &gt;</b><small>Helm desired state</small></div></div>';
+  if(p.visual==='cicd')graphic='<div class="pipeline-proof"><img src="assets/azure-build-completed.png" alt="" width="500" height="400"><div><span class="proof-label">ORIGINAL RUN EVIDENCE</span><b>Build. Push. Recorded.</b><small>Azure DevOps · 13 Jun 2026</small><span class="proof-timing">1m 0s <i>build stage</i></span></div></div>';
   if(p.visual==='helm')graphic='<span class="mini-node">Shared chart</span><span>→</span><span class="mini-node">staging · 1</span><span>/</span><span class="mini-node">prod · 3</span>';
   if(p.visual==='iac')graphic='<span class="mini-node">VNet</span><span>+</span><span class="mini-node">AKS</span><span>+</span><span class="mini-node">Monitor</span>';
   if(p.visual==='local')graphic='<span class="mini-node">Docker</span><span>→</span><span class="mini-node">Minikube</span><span>←</span><span class="mini-node">Config</span>';
@@ -253,7 +251,7 @@ function renderProjects(){
   const selected=projects.filter(p=>(activeFilter==='All'||p.tags.includes(activeFilter))&&`${p.title} ${p.description} ${p.stack.join(' ')} ${p.tags.join(' ')}`.toLowerCase().includes(searchTerm));
   $('#project-count').textContent=`${selected.length} of ${projects.length} case studies${activeFilter==='All'?'':` · ${activeFilter}`}`;
   $('#empty-state').hidden=selected.length>0;
-  $('#project-grid').innerHTML=selected.map(p=>`<article class="project-card">${projectVisual(p)}<div class="project-body"><p class="card-category">${p.category}</p><h3>${p.title}</h3><p class="project-description">${p.description}</p><div class="tags">${p.stack.map(t=>`<span class="tag">${t}</span>`).join('')}</div><p class="card-outcome">${p.outcome}</p><div class="card-bottom"><button class="case-link" data-open="${p.id}" aria-label="Read case study: ${p.title}">Explore case study <span aria-hidden="true">↗</span></button>${p.id==='aws-web-hosting-labs'?'<span class="source-link">Practice notes</span>':`<a class="source-link" href="${GH+p.id}" ${ext} aria-label="Source repository: ${p.title}">Source ↗</a>`}</div></div></article>`).join('');
+  $('#project-grid').innerHTML=selected.map(p=>`<article class="project-card ${p.id==='secure-gitops-platform'?'featured':''}">${projectVisual(p)}<div class="project-body"><p class="card-category">${p.category}</p><h3>${p.title}</h3><p class="project-description">${p.description}</p><div class="tags">${p.stack.map(t=>`<span class="tag">${t}</span>`).join('')}</div><p class="card-outcome">${p.outcome}</p><div class="card-bottom"><button class="case-link" data-open="${p.id}" aria-label="Read case study: ${p.title}">Explore case study <span aria-hidden="true">↗</span></button>${p.id==='aws-web-hosting-labs'?'<span class="source-link">Practice notes</span>':`<a class="source-link" href="${GH+p.id}" ${ext} aria-label="Source repository: ${p.title}">Source ↗</a>`}</div></div></article>`).join('');
 }
 
 function renderMetric(id){
@@ -353,3 +351,12 @@ function renderLocalMeasurement(){
 
 renderFilters();renderProjects();renderMetric('rate');renderFixes();setLayer('source');syncRoute();
 renderLocalMeasurement();
+
+// Pointer lighting is decorative and never represents live system status.
+const blueprintPanel=document.querySelector('.blueprint');
+if(blueprintPanel&&window.matchMedia&&window.matchMedia('(pointer:fine)').matches){
+ blueprintPanel.addEventListener('pointermove',event=>{const r=blueprintPanel.getBoundingClientRect();blueprintPanel.style.setProperty('--pointer-x',`${event.clientX-r.left}px`);blueprintPanel.style.setProperty('--pointer-y',`${event.clientY-r.top}px`);});
+}
+const progressBar=document.querySelector('#scroll-progress');
+function updateScrollProgress(){if(!progressBar)return;const max=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.transform=`scaleX(${max>0?window.scrollY/max:0})`;}
+window.addEventListener('scroll',updateScrollProgress,{passive:true});updateScrollProgress();
