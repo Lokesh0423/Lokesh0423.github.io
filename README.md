@@ -27,3 +27,7 @@ The previous portfolio remains available in repository history. The existing pro
 ## Verification
 
 JavaScript syntax, CSS parsing, responsive source rules and interaction logic were checked. Rendered desktop/mobile visual testing was unavailable during creation; source-level checks do not establish visual browser verification.
+
+## Visual system
+
+The portfolio uses a dark technical editorial layout, a source architecture explorer, a featured platform case study and original pipeline screenshots. Space Grotesk and IBM Plex Mono are subsetted and self-hosted; license notices are under assets/fonts/. The 320px headline width was checked against the actual font metrics. Reduced-motion and keyboard behavior are preserved.
