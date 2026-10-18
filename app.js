@@ -230,6 +230,8 @@ function setLayer(id){
 }
 
 function projectVisual(p){
+  if(p.visual==='cicd')return `<div class="project-visual screenshot-card"><img src="assets/azure-build-completed.png" alt="Original Azure pipeline build screenshot" loading="lazy"><span class="screenshot-label">BUILD EVIDENCE · 13 JUN 2026</span></div>`;
+
   const status=p.visual==='cicd'?'Historical evidence':p.visual==='aws'?'Practice history':'Source walkthrough';
   let graphic='';
   if(p.visual==='gitops')graphic='<span class="mini-node">Git</span><span>→</span><span class="mini-node">CI / Scan</span><span>→</span><span class="mini-node">Argo CD</span>';
