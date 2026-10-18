@@ -1,0 +1,36 @@
+{
+  "label": "Local reproduction of historical Jest open-handle fix",
+  "reproduced_at": "2026-10-18T11:06:14.631821+00:00",
+  "before_commit": "df1bf436786d95c7a895cecd33164d176e683d67",
+  "fix_commit": "c6c9e9db63c516a7d2c2b2709925257eff496fd7",
+  "command": "PORT=0 node node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --no-coverage",
+  "node": "v24.19.0",
+  "results": [
+    {
+      "revision": "before",
+      "timeout_seconds": 8,
+      "timed_out": true,
+      "exit_code": null,
+      "elapsed_seconds": 8.016,
+      "four_tests_passed": true,
+      "open_handle_report": true,
+      "output_file": "before-test-output.txt"
+    },
+    {
+      "revision": "after",
+      "timeout_seconds": 8,
+      "timed_out": false,
+      "exit_code": 0,
+      "elapsed_seconds": 1.117,
+      "four_tests_passed": true,
+      "open_handle_report": false,
+      "output_file": "after-test-output.txt"
+    }
+  ],
+  "limits": [
+    "Historical source rerun locally with the same locally installed dependencies for both revisions.",
+    "Not original historical CI logs. Before process was terminated at an 8-second harness timeout.",
+    "Runtime durations are environment-specific, not performance or recovery improvement claims.",
+    "This fix does not resolve the separate September Trivy scan failure."
+  ]
+}

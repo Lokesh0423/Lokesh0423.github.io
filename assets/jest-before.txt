@@ -1,0 +1,34 @@
+  console.log
+    Server running on port 0
+
+      at Server.log (src/index.js:62:11)
+
+PASS tests/app.test.js
+  API Health Checks
+    ✓ GET / returns service info (164 ms)
+    ✓ GET /health returns healthy (12 ms)
+    ✓ GET /ready returns ready (8 ms)
+    ✓ GET /metrics returns prometheus format (16 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       4 passed, 4 total
+Snapshots:   0 total
+Time:        1.034 s
+Ran all test suites.
+
+Jest has detected the following 1 open handle potentially keeping Jest from exiting:
+
+  ●  TCPSERVERWRAP
+
+      59 | });
+      60 |
+    > 61 | app.listen(PORT, () => {
+         |     ^
+      62 |   console.log(`Server running on port ${PORT}`);
+      63 | });
+      64 |
+
+      at app.listen (../../../535bdd463620/metrics-lab/node_modules/express/lib/application.js:635:24)
+      at Object.listen (src/index.js:61:5)
+      at Object.require (tests/app.test.js:2:13)
+
