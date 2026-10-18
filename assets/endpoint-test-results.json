@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/Lokesh0423/secure-gitops-platform",
+  "commit_sha": "4cffb6d08395ebdeb63fd50d90f5786418ef9239",
+  "tested_on": "2026-10-18",
+  "command": "npm test -- --runInBand",
+  "passed": 4,
+  "total": 4,
+  "scope": "Local API endpoint tests only. Not a cloud deployment health check.",
+  "endpoints": [
+    "/",
+    "/health",
+    "/ready",
+    "/metrics"
+  ]
+}

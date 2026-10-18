@@ -1,0 +1,47 @@
+{
+  "label": "Local smoke measurement, not a cloud capacity benchmark",
+  "repository": "https://github.com/Lokesh0423/secure-gitops-platform",
+  "commit_sha": "4cffb6d08395ebdeb63fd50d90f5786418ef9239",
+  "measured_at": "2026-10-18T10:30:16.763Z",
+  "environment": {
+    "platform": "linux",
+    "node": "v24.19.0",
+    "execution": "Single Node.js process serving the app and running the load generator on localhost",
+    "resource_limits": "Not controlled; no dedicated CPU or memory reservation",
+    "transport": "HTTP loopback, no TLS or external network"
+  },
+  "workload": {
+    "route": "/",
+    "method": "GET",
+    "warmup_requests": 10,
+    "target_requests_per_second": 100,
+    "scheduling_interval_ms": 10,
+    "duration_seconds": 30,
+    "max_inflight": 20
+  },
+  "observations": {
+    "started_at": "2026-10-18T10:30:16.763Z",
+    "ended_at": "2026-10-18T10:30:46.763Z",
+    "elapsed_seconds": 30.00064924,
+    "attempted_requests": 2924,
+    "successful_2xx": 2924,
+    "non_2xx_or_network_errors": 0,
+    "server_5xx": 0,
+    "skipped_scheduling_ticks": 0,
+    "completed_requests_per_second": 97.4645574036917,
+    "percentile_method": "nearest rank on sorted completed-request client durations",
+    "client_latency_ms": {
+      "p50": 1.5832960000007006,
+      "p95": 2.304575999998633,
+      "max": 76.11950499999875
+    }
+  },
+  "limitations": [
+    "One short local run; no production reliability, uptime or maximum throughput is established.",
+    "Client and server share a process and host; CPU/memory allocation and noise were not controlled.",
+    "Client latency percentiles are computed from completed HTTP samples, not a Prometheus query.",
+    "This was a success-path smoke test, not a deliberate error, recovery or resilience exercise.",
+    "No Prometheus server, Grafana dashboard or Kubernetes cluster was connected; raw /metrics exposition was captured.",
+    "No before/after performance improvement is claimed."
+  ]
+}
