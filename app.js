@@ -160,7 +160,92 @@ const projects = [
     ],
     limits:'The EC2 and S3 details come from practice history rather than repository evidence. S3 end-to-end success is not asserted. No uptime, CloudWatch monitoring coverage or cost improvements are claimed.',
     architecture:[['EC2 practice path','Local SSH client → EC2 Linux instance → Apache → website.'],['S3 practice path','HTML and asset object keys → configured index document → static website endpoint.'],['Troubleshooting boundary','Check local identity-file access, then remote authentication; compare requested object names with actual keys.']],evidence:[]
-  }
+  },
+  {
+  "id": "devops-troubleshooting-lab",
+  "number": "07",
+  "title": "Diagnose. Recover. Verify.",
+  "category": "DEVOPS / INCIDENT TROUBLESHOOTING",
+  "visual": "troubleshooting",
+  "description": "A Flask and PostgreSQL lab investigating startup failures, lost orders and database outages through logs and HTTP checks.",
+  "tags": [
+    "Docker",
+    "Troubleshooting"
+  ],
+  "stack": [
+    "Docker Compose",
+    "Python",
+    "Flask",
+    "PostgreSQL",
+    "Git"
+  ],
+  "outcome": "3 incident exercises · persistent orders · 200 / 404 API checks",
+  "evidenceLabel": "Source + documented local exercises",
+  "reviewedAt": "22 October 2026",
+  "problem": "How do you distinguish a running container from a working service, find the failing dependency, and verify recovery without losing data?",
+  "contribution": "I containerized a Flask orders API with Gunicorn, connected it to PostgreSQL using Psycopg, and used Docker Compose to manage service networking, database health checks and persistent storage. I investigated failures through container status, logs and curl responses.",
+  "decisions": [
+    "Separate app liveness (/health) from database connectivity (/ready).",
+    "Store orders in PostgreSQL with a named volume instead of process memory.",
+    "Use the Compose service name db for database connections and wait for database health at startup.",
+    "Use parameterized SQL and validate order input; return 404 for a missing order.",
+    "Keep database credentials in an ignored .env file."
+  ],
+  "results": [
+    "Resolved a Gunicorn startup failure caused by an empty app.py: inspected logs, saved the source, rebuilt the image and verified HTTP 200.",
+    "Reproduced order loss after restarting the initial memory-based app, then moved storage to PostgreSQL. Local exercises checked retained orders after app restart and container replacement.",
+    "Stopped PostgreSQL deliberately: /health stayed 200 while /ready and /orders returned 503. Starting the database restored both endpoints to 200 and preserved the order without restarting the app.",
+    "Verified GET /orders/1 returned the saved order with 200 and a nonexistent order ID returned 404. The API change is committed in GitHub."
+  ],
+  "limits": "Results come from local Docker Desktop exercises and the documented terminal checks. The linked repository contains the implementation and reproduction commands.",
+  "architecture": [
+    [
+      "HTTP client",
+      "curl sends create, list and single-order requests to localhost:8000."
+    ],
+    [
+      "Flask + Gunicorn",
+      "The app validates requests and exposes health, readiness and order endpoints."
+    ],
+    [
+      "Compose network",
+      "The app resolves db and connects to PostgreSQL on port 5432."
+    ],
+    [
+      "PostgreSQL + named volume",
+      "Orders are stored in a table; database files persist outside the container lifecycle."
+    ]
+  ],
+  "evidence": [
+    [
+      "Application and order lookup API",
+      "app/app.py"
+    ],
+    [
+      "Database health check and persistent volume",
+      "compose.yaml"
+    ],
+    [
+      "Application image instructions",
+      "Dockerfile"
+    ],
+    [
+      "Setup and incident reproduction steps",
+      "README.md"
+    ],
+    [
+      "Ignored local credentials",
+      ".gitignore"
+    ]
+  ],
+  "extraLinks": [
+    [
+      "Order lookup API commit",
+      "https://github.com/Lokesh0423/devops-troubleshooting-lab/commit/88ce74215592661f050c89c486576aef9739db19",
+      "Existing-order 200 and missing-order 404 cases checked locally"
+    ]
+  ]
+}
 ];
 
 const layers = {
@@ -230,7 +315,7 @@ function setLayer(id){
 }
 
 function projectVisual(p){
-  const status=p.visual==='cicd'?'Historical evidence':p.visual==='aws'?'Practice history':'Source walkthrough';
+  const status=p.visual==='troubleshooting'?'Local incident exercises':p.visual==='cicd'?'Historical evidence':p.visual==='aws'?'Practice history':'Source walkthrough';
   let graphic='';
   if(p.visual==='gitops')graphic='<div class="platform-map"><div class="platform-node"><span>01 / SOURCE</span><b>{ git }</b><small>Versioned configuration</small></div><div class="platform-node"><span>02 / VALIDATE</span><b>[ CI + Trivy ]</b><small>Test and image scan</small></div><div class="platform-node"><span>04 / OBSERVE</span><b>/metrics</b><small>Prometheus instrumentation</small></div><div class="platform-node"><span>03 / RECONCILE</span><b>&lt; Argo CD &gt;</b><small>Helm desired state</small></div></div>';
   if(p.visual==='cicd')graphic='<div class="pipeline-proof"><img src="assets/azure-build-completed.png" alt="" width="500" height="400"><div><span class="proof-label">ORIGINAL RUN EVIDENCE</span><b>Build. Push. Recorded.</b><small>Azure DevOps · 13 Jun 2026</small><span class="proof-timing">1m 0s <i>build stage</i></span></div></div>';
@@ -238,12 +323,13 @@ function projectVisual(p){
   if(p.visual==='iac')graphic='<span class="mini-node">VNet</span><span>+</span><span class="mini-node">AKS</span><span>+</span><span class="mini-node">Monitor</span>';
   if(p.visual==='local')graphic='<span class="mini-node">Docker</span><span>→</span><span class="mini-node">Minikube</span><span>←</span><span class="mini-node">Config</span>';
   if(p.visual==='aws')graphic='<span class="mini-node">EC2 + Apache</span><span>/</span><span class="mini-node">S3 static site</span>';
-  const caption={gitops:'DECLARATIVE DELIVERY / APPLICATION SIGNALS',cicd:'ORIGINAL SCREENSHOTS INSIDE THE CASE STUDY',helm:'CONFIGURATION VALUES, NOT LOAD-TEST RESULTS',iac:'THREE MODULES / TWO ENVIRONMENT ENTRY POINTS',local:'IMAGE-BUILD EVIDENCE / RUNTIME VALIDATION PENDING',aws:'TWO LABS / SSH & OBJECT-KEY TROUBLESHOOTING'}[p.visual];
+  if(p.visual==='troubleshooting')graphic='<span class="mini-node">Flask API</span><span>→</span><span class="mini-node">PostgreSQL</span><span>→</span><span class="mini-node">Volume</span>';
+  const caption={troubleshooting:'LOGS / READINESS / DATA PERSISTENCE',gitops:'DECLARATIVE DELIVERY / APPLICATION SIGNALS',cicd:'ORIGINAL SCREENSHOTS INSIDE THE CASE STUDY',helm:'CONFIGURATION VALUES, NOT LOAD-TEST RESULTS',iac:'THREE MODULES / TWO ENVIRONMENT ENTRY POINTS',local:'IMAGE-BUILD EVIDENCE / RUNTIME VALIDATION PENDING',aws:'TWO LABS / SSH & OBJECT-KEY TROUBLESHOOTING'}[p.visual];
   return `<div class="project-visual visual-${p.visual}" aria-hidden="true"><div class="visual-top"><span>PROJECT / ${p.number}</span><span class="visual-status"><i></i>${status}</span></div><div class="diagram-mini">${graphic}</div><span class="visual-caption">${caption}</span></div>`;
 }
 
 function renderFilters(){
-  const filters=['All','Kubernetes','CI/CD','GitOps','Terraform','AWS','Monitoring'];
+  const filters=['All','Kubernetes','CI/CD','GitOps','Terraform','AWS','Monitoring','Docker','Troubleshooting'];
   $('#project-filters').innerHTML=filters.map(name=>`<button class="filter ${name===activeFilter?'active':''}" data-filter="${name}" aria-pressed="${name===activeFilter}">${name}<sup>${name==='All'?projects.length:projects.filter(p=>p.tags.includes(name)).length}</sup></button>`).join('');
 }
 
@@ -275,7 +361,7 @@ function setCaseTab(tab){
   panel.setAttribute('aria-labelledby',`case-tab-${tab}`);
   if(tab==='overview')panel.innerHTML=`<div class="case-columns"><div><h3>The problem</h3><p>${p.problem}</p><h4>My contribution</h4><p>${p.contribution}</p></div><div><h3>Engineering choices</h3><ul>${p.decisions.map(d=>`<li>${d}</li>`).join('')}</ul></div></div><div class="results"><h3>Results I can point to</h3>${p.results.map(r=>`<p>${r}</p>`).join('')}</div><div class="scope-note"><p><strong>Scope & validation boundary.</strong> ${p.limits}</p></div>`;
   if(tab==='architecture')panel.innerHTML=`<h3>Follow the system</h3><p class="arch-note">A walkthrough of the committed design. This diagram does not indicate a live deployment.</p>${p.environmentCompare?'<div class="env-switch" role="group" aria-label="Compare environment configuration"><button class="active" data-env="staging" aria-pressed="true">Staging</button><button data-env="production" aria-pressed="false">Production</button></div><div id="env-values" class="env-values" aria-live="polite"></div>':''}<div class="arch-path">${p.architecture.map((n,i)=>`<div class="arch-node"><span>0${i+1}</span><div><h4>${n[0]}</h4><p>${n[1]}</p></div></div>`).join('')}</div><div class="scope-note"><p><strong>What remains to validate.</strong> ${p.limits}</p></div>`;
-  if(tab==='evidence')panel.innerHTML=`<h3>Go straight to the evidence</h3><p>${p.id==='aws-web-hosting-labs'?'These labs are based on my recorded AWS practice. No public source repository or current runtime proof was verified.':'Source links open the repository’s main branch. Historical run links and screenshots are dated observations; current code and current runtime health can differ.'}</p><div class="evidence-list">${p.evidence.map(e=>`<a class="evidence-item" href="${source(p.id,e[1])}" ${ext}><div><strong>${e[0]}</strong><small>${esc(e[1])}</small></div><span aria-hidden="true">↗</span></a>`).join('')}${(p.extraLinks||[]).map(e=>`<a class="evidence-item" href="${e[1]}" ${ext}><div><strong>${e[0]}</strong><small>${e[2]}</small></div><span aria-hidden="true">↗</span></a>`).join('')}</div>${p.screenshots?`<div class="case-screenshots">${p.screenshots.map(s=>`<figure><a href="${s[0]}" ${ext}><img src="${s[0]}" alt="${s[1]}" loading="lazy" width="500" height="300"></a><figcaption>${s[2]}</figcaption></figure>`).join('')}</div>`:''}<div class="scope-note"><p><strong>Evidence reviewed:</strong> 18 October 2026. All case studies describe personal projects or labs. No client production metrics, uptime guarantees or unverified improvement percentages are claimed.</p></div>`;
+  if(tab==='evidence')panel.innerHTML=`<h3>Go straight to the evidence</h3><p>${p.id==='aws-web-hosting-labs'?'These labs are based on my recorded AWS practice. No public source repository or current runtime proof was verified.':'Source links open the repository’s main branch. Historical run links and screenshots are dated observations; current code and current runtime health can differ.'}</p><div class="evidence-list">${p.evidence.map(e=>`<a class="evidence-item" href="${source(p.id,e[1])}" ${ext}><div><strong>${e[0]}</strong><small>${esc(e[1])}</small></div><span aria-hidden="true">↗</span></a>`).join('')}${(p.extraLinks||[]).map(e=>`<a class="evidence-item" href="${e[1]}" ${ext}><div><strong>${e[0]}</strong><small>${e[2]}</small></div><span aria-hidden="true">↗</span></a>`).join('')}</div>${p.screenshots?`<div class="case-screenshots">${p.screenshots.map(s=>`<figure><a href="${s[0]}" ${ext}><img src="${s[0]}" alt="${s[1]}" loading="lazy" width="500" height="300"></a><figcaption>${s[2]}</figcaption></figure>`).join('')}</div>`:''}<div class="scope-note"><p><strong>Evidence reviewed:</strong> ${p.reviewedAt||'18 October 2026'}. All case studies describe personal projects or labs. No client production metrics, uptime guarantees or unverified improvement percentages are claimed.</p></div>`;
   if(p.environmentCompare&&tab==='architecture')setEnvironment('staging');
 }
 
