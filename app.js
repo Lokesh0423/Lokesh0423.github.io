@@ -161,7 +161,7 @@ const projects = [
     limits:'The EC2 and S3 details come from practice history rather than repository evidence. S3 end-to-end success is not asserted. No uptime, CloudWatch monitoring coverage or cost improvements are claimed.',
     architecture:[['EC2 practice path','Local SSH client → EC2 Linux instance → Apache → website.'],['S3 practice path','HTML and asset object keys → configured index document → static website endpoint.'],['Troubleshooting boundary','Check local identity-file access, then remote authentication; compare requested object names with actual keys.']],evidence:[]
   },
-  {
+{
   "id": "devops-troubleshooting-lab",
   "number": "07",
   "title": "Diagnose. Recover. Verify.",
@@ -179,23 +179,26 @@ const projects = [
     "PostgreSQL",
     "Git"
   ],
-  "outcome": "3 incident exercises · persistent orders · 200 / 404 API checks",
-  "evidenceLabel": "Source + documented local exercises",
-  "reviewedAt": "22 October 2026",
+  "outcome": "App + database healthy · HTTP 200 checks · healthcheck PR merged",
+  "evidenceLabel": "Source + local checks + merged PR",
+  "reviewedAt": "24 October 2026",
   "problem": "How do you distinguish a running container from a working service, find the failing dependency, and verify recovery without losing data?",
-  "contribution": "I containerized a Flask orders API with Gunicorn, connected it to PostgreSQL using Psycopg, and used Docker Compose to manage service networking, database health checks and persistent storage. I investigated failures through container status, logs and curl responses.",
+  "contribution": "I containerized a Flask orders API with Gunicorn, connected it to PostgreSQL using Psycopg, and used Docker Compose to manage service networking, database health checks and persistent storage. I investigated failures through container status, logs and curl responses. I added an application healthcheck and delivered it through a dedicated Git branch, local verification, pull request and merge.",
   "decisions": [
     "Separate app liveness (/health) from database connectivity (/ready).",
     "Store orders in PostgreSQL with a named volume instead of process memory.",
     "Use the Compose service name db for database connections and wait for database health at startup.",
     "Use parameterized SQL and validate order input; return 404 for a missing order.",
-    "Keep database credentials in an ignored .env file."
+    "Keep database credentials in an ignored .env file.",
+    "Check /health inside the app container using Python every 10 seconds, with a 3-second request timeout, 5-second command timeout, 3 retries and a 15-second startup grace period. An unhealthy status does not automatically restart the container."
   ],
   "results": [
     "Resolved a Gunicorn startup failure caused by an empty app.py: inspected logs, saved the source, rebuilt the image and verified HTTP 200.",
     "Reproduced order loss after restarting the initial memory-based app, then moved storage to PostgreSQL. Local exercises checked retained orders after app restart and container replacement.",
     "Stopped PostgreSQL deliberately: /health stayed 200 while /ready and /orders returned 503. Starting the database restored both endpoints to 200 and preserved the order without restarting the app.",
-    "Verified GET /orders/1 returned the saved order with 200 and a nonexistent order ID returned 404. The API change is committed in GitHub."
+    "Verified GET /orders/1 returned the saved order with 200 and a nonexistent order ID returned 404. The API change is committed in GitHub.",
+    "On 24 October, docker compose ps reported both app and database healthy. Separate curl checks returned HTTP 200 from /health and /ready.",
+    "Reviewed the compose.yaml diff, committed and pushed devops/app-healthcheck, then merged PR #1 into main and pulled the merged change locally; git status showed a clean working tree."
   ],
   "limits": "Results come from local Docker Desktop exercises and the documented terminal checks. The linked repository contains the implementation and reproduction commands.",
   "architecture": [
@@ -222,7 +225,7 @@ const projects = [
       "app/app.py"
     ],
     [
-      "Database health check and persistent volume",
+      "App and database healthchecks, networking and persistent volume",
       "compose.yaml"
     ],
     [
@@ -243,6 +246,16 @@ const projects = [
       "Order lookup API commit",
       "https://github.com/Lokesh0423/devops-troubleshooting-lab/commit/88ce74215592661f050c89c486576aef9739db19",
       "Existing-order 200 and missing-order 404 cases checked locally"
+    ],
+    [
+      "Application healthcheck pull request",
+      "https://github.com/Lokesh0423/devops-troubleshooting-lab/pull/1",
+      "Merged 24 October 2026; Python healthcheck added in compose.yaml"
+    ],
+    [
+      "Healthcheck merge commit",
+      "https://github.com/Lokesh0423/devops-troubleshooting-lab/commit/b2697e6f87c4ec945a4e70576b778fa2d6492057",
+      "Reviewed change merged into main"
     ]
   ]
 }
